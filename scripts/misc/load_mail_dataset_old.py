@@ -2,6 +2,7 @@ import numpy as np
 from typing import Union
 from loguru import logger
 
+# This file is archived, since sklearn NB doesn't use 3D ndarray
 
 def _pad_array(
     data_list: list,
@@ -29,6 +30,7 @@ def _pad_array(
 
     #   - Assign pad_length if not provided
     if not pad_length:
+        padding_mode = "mean" if not padding_mode else padding_mode
         pad_length = padding_mode_vals[padding_mode]
 
     logger.info(

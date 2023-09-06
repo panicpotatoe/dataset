@@ -11,12 +11,12 @@
 # %%
 import numpy as np
 from sklearn.naive_bayes import MultinomialNB
-from scripts.util.read_dataset  import read_data, read_label
+from scripts.misc.load_mail_dataset import read_data, read_label
 
-X_train = read_data('../datasets/spam-email/ex6-prepared/train-features-50.txt')
-y_train = read_label('../datasets/spam-email/ex6-prepared/train-labels-50.txt')
-X_test = read_data('../datasets/spam-email/ex6-prepared/test-features.txt')
-y_test = read_label('../datasets/spam-email/ex6-prepared/test-labels.txt')
+X_train = read_data('datasets/spam-email/ex6-prepared/train-features-50.txt')
+y_train = read_label('datasets/spam-email/ex6-prepared/train-labels-50.txt')
+X_test = read_data('datasets/spam-email/ex6-prepared/test-features.txt', max_sentence_length= 233)
+y_test = read_label('datasets/spam-email/ex6-prepared/test-labels.txt')
 
 
 
@@ -43,6 +43,13 @@ clf = MultinomialNB()
 clf.fit(X_train, y_train)
 
 # %%
+import keras_nlp
+
+classifier = keras_nlp.models.BertClassifier.from_preset(
+    "bert_base_en_uncased", 
+    num_classes=2,
+)
+classifier.fit((X_train, y_train), validation_data=(X_test, y_test))
 
 
-
+# %%
