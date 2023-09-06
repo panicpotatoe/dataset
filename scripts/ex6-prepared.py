@@ -15,24 +15,8 @@ from scripts.misc.load_mail_dataset import read_data, read_label
 
 X_train = read_data('datasets/spam-email/ex6-prepared/train-features-50.txt')
 y_train = read_label('datasets/spam-email/ex6-prepared/train-labels-50.txt')
-X_test = read_data('datasets/spam-email/ex6-prepared/test-features.txt', max_sentence_length= 233)
+X_test = read_data('datasets/spam-email/ex6-prepared/test-features.txt')
 y_test = read_label('datasets/spam-email/ex6-prepared/test-labels.txt')
-
-
-
-# %% [markdown]
-# ### An example of padding
-
-# %%
-a = [[1, 2, 3], [4,5]]
-out = []
-for arr in a: 
-    b = []
-    b[:len(arr)]=arr
-    b[len(arr):]=[0]*(10-len(arr))
-    out.append(b)
-    
-np.array(out)
 
 
 # %% [markdown]
@@ -41,15 +25,11 @@ np.array(out)
 # %%
 clf = MultinomialNB()
 clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
 
 # %%
-import keras_nlp
-
-classifier = keras_nlp.models.BertClassifier.from_preset(
-    "bert_base_en_uncased", 
-    num_classes=2,
-)
-classifier.fit((X_train, y_train), validation_data=(X_test, y_test))
-
+# ## 3. Evaluate
+from sklearn.metrics import classification_report
+print(classification_report(y_pred, y_test))
 
 # %%

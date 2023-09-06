@@ -77,16 +77,16 @@ def read_data(
     with open(fpath) as f:
         raw_data = f.readlines()
 
-    data_list = {}
+    data_dict = {}
     # 1. Convert the bag of words format to the format: dataset->[document->[tokens and frequency->[]]]
     for data in raw_data:
         data_split = data.split()
         idx = int(data_split[0])
-        if idx not in data_list:
-            data_list[idx] = []
-        data_list[int(data_split[0])].append([int(data_split[1]), int(data_split[2])])
+        if idx not in data_dict:
+            data_dict[idx] = []
+        data_dict[int(data_split[0])].append([int(data_split[1]), int(data_split[2])])
 
-    data_list = list(data_list.values())
+    data_list = list(data_dict.values())
 
     arr = _pad_array(
         data_list, pad_length=max_sentence_length, padding_mode=padding_mode
