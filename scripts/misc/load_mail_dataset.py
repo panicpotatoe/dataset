@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.sparse import csr_array
+from scipy.sparse import csr_array, csc_array
 from typing import Union
 from loguru import logger
 
@@ -27,8 +27,7 @@ def read_data(fpath: str, vocab_size: int = 2500) -> csr_array:
         assert (
             len(rows) == len(cols) == len(vals)
         ), f"Invalid mapping size. Expected rows, cols, and vals to have the same length but found {len(rows)} != {len(cols)} != {len(vals)}"
-        # rows, cols, vals = _pad_csr(vocab_size, *[rows, cols, vals])
-        csr_mat = csr_array(
+        csr_mat = csc_array(
             (vals, (rows, cols)),
             shape=(max(rows) + 1, vocab_size),
         ).toarray()
@@ -36,7 +35,7 @@ def read_data(fpath: str, vocab_size: int = 2500) -> csr_array:
     except Exception as e:
         logger.error(f"Error {e} happened while processing data")
     else:
-        logger.info(f"Successfully load csr matrix with shape {csr_mat.shape}")
+        logger.info(f"Successfully load csc matrix with shape {csr_mat.shape}")
         logger.info(csr_mat)
         return csr_mat
 
